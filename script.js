@@ -1,17 +1,13 @@
 const voiceButton = document.querySelector('#voice-button');
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
+const input = document.querySelector('#complaint-input');
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 
-voiceButton.addEventListener('click', function() {
-  recognition.start();
-  voiceButton.textContent = 'Listening...';
-
-  recognition.onresult = function(event) {
-    const text = event.results[0][0].transcript;
-    input.value += text + ' ';
-    updateDraftProgress();
-  };
-});
+if (recognition) {
+  recognition.lang = 'en-IN';
+  voiceButton.addEventListener('click', function() {
+    recognition.start();
+    voiceButton.textContent = 'Listening...';
   });
 
   recognition.onresult = function(event) {
@@ -19,6 +15,7 @@ voiceButton.addEventListener('click', function() {
     input.value = `${input.value.trim()} ${text}`.trim();
     input.dispatchEvent(new Event('input'));
   };
+
   recognition.onend = function() {
     voiceButton.textContent = 'Voice Complaint';
   };
