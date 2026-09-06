@@ -4,6 +4,14 @@ import { ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
+const yearOptions = ['First Year', 'Second Year', 'Third Year', 'Final Year'];
+const departmentOptions = [
+  'Computer Engineering',
+  'EN&TC',
+  'IT',
+  'AIML',
+];
+
 export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', studentId: '', department: '', year: '' });
   const [loading, setLoading] = useState(false);
@@ -39,30 +47,36 @@ export default function Register() {
           <p className="text-sm text-slate-500 mb-6">Registration is for students. Authority accounts are created by admin.</p>
           <form onSubmit={submit} className="space-y-4">
             <div>
-              <label className="label">Full name</label>
+              <label className="label">Full name <span className="text-red-500">*</span></label>
               <input required className="input-field" value={form.name} onChange={update('name')} />
             </div>
             <div>
-              <label className="label">Email</label>
+              <label className="label">Email <span className="text-red-500">*</span></label>
               <input type="email" required className="input-field" value={form.email} onChange={update('email')} />
             </div>
             <div>
-              <label className="label">Password</label>
+              <label className="label">Password <span className="text-red-500">*</span></label>
               <input type="password" required minLength={6} className="input-field" value={form.password} onChange={update('password')} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="label">Student ID</label>
-                <input className="input-field" value={form.studentId} onChange={update('studentId')} />
+                <label className="label">Roll No. <span className="text-red-500">*</span></label>
+                <input required className="input-field" value={form.studentId} onChange={update('studentId')} />
               </div>
               <div>
-                <label className="label">Year</label>
-                <input className="input-field" value={form.year} onChange={update('year')} placeholder="e.g. Final Year" />
+                <label className="label">Year <span className="text-red-500">*</span></label>
+                <select required className="input-field" value={form.year} onChange={update('year')}>
+                  <option value="" disabled>Select year</option>
+                  {yearOptions.map((year) => <option key={year} value={year}>{year}</option>)}
+                </select>
               </div>
             </div>
             <div>
-              <label className="label">Department</label>
-              <input className="input-field" value={form.department} onChange={update('department')} placeholder="e.g. Computer Engineering" />
+              <label className="label">Department <span className="text-red-500">*</span></label>
+              <select required className="input-field" value={form.department} onChange={update('department')}>
+                <option value="" disabled>Select department</option>
+                {departmentOptions.map((department) => <option key={department} value={department}>{department}</option>)}
+              </select>
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full">
               {loading ? 'Creating account...' : 'Register'}
