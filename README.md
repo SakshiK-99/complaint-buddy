@@ -177,3 +177,4 @@ All routes except register/login require a `Bearer` JWT token.
 - Evidence files are stored on local disk (`backend/uploads/`), which is fine
   for local/demo use but not suited for a multi-server production deployment.
 - No pagination yet on complaint/user lists — fine for demo data volumes.
+
