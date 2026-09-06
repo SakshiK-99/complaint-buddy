@@ -1,4 +1,32 @@
-const input = document.querySelector('#complaint-input');
+const voiceButton = document.querySelector('#voice-button');
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
+voiceButton.addEventListener('click', function() {
+  recognition.start();
+  voiceButton.textContent = 'Listening...';
+
+  recognition.onresult = function(event) {
+    const text = event.results[0][0].transcript;
+    input.value += text + ' ';
+    updateDraftProgress();
+  };
+});
+  });
+
+  recognition.onresult = function(event) {
+    const text = event.results[0][0].transcript;
+    input.value = `${input.value.trim()} ${text}`.trim();
+    input.dispatchEvent(new Event('input'));
+  };
+  recognition.onend = function() {
+    voiceButton.textContent = 'Voice Complaint';
+  };
+} else {
+  voiceButton.disabled = true;
+  voiceButton.textContent = 'Voice input unavailable';
+}
+
 const wordCount = document.querySelector('#word-count');
 const progress = document.querySelector('.progress-line span');
 const continueButton = document.querySelector('#continue-button');
