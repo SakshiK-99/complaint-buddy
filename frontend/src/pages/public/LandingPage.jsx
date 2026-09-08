@@ -40,7 +40,9 @@ export default function LandingPage() {
           <Link to="/register" className="btn-primary flex items-center gap-2 text-base px-6 py-3">
             <FilePlus2 className="w-5 h-5" /> Submit a Complaint
           </Link>
-          <Link to="/login" className="btn-secondary text-base px-6 py-3">Login</Link>
+          <Link to="/login/student" className="btn-secondary text-base px-6 py-3">Student Login</Link>
+          <Link to="/login/mentor" className="btn-secondary text-base px-6 py-3">Mentor Login</Link>
+          <Link to="/login/admin" className="btn-secondary text-base px-6 py-3">Admin Login</Link>
         </div>
       </section>
 

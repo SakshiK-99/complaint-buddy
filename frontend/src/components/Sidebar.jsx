@@ -19,6 +19,7 @@ const NAV_BY_ROLE = {
   ],
   mentor: [
     { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
+    { label: 'Mentor Dashboard', to: '/mentor-dashboard', icon: LayoutDashboard },
     { label: 'Complaints', to: '/complaint-management', icon: ListChecks },
     { label: 'Weekly Reports', to: '/weekly-reports', icon: ClipboardList },
   ],

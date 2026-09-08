@@ -16,6 +16,7 @@ import TrackComplaint from './pages/student/TrackComplaint';
 import ComplaintManagement from './pages/authority/ComplaintManagement';
 import Analytics from './pages/authority/Analytics';
 import WeeklyReports from './pages/authority/WeeklyReports';
+import MentorDashboard from './pages/authority/MentorDashboard';
 
 import UserManagement from './pages/admin/UserManagement';
 import RecurringIssues from './pages/admin/RecurringIssues';
@@ -29,6 +30,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/login/:role" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="/about" element={<About />} />
@@ -43,6 +45,7 @@ export default function App() {
 
       {/* Authority */}
       <Route path="/complaint-management" element={<ProtectedRoute roles={AUTHORITY_ROLES}><ComplaintManagement /></ProtectedRoute>} />
+      <Route path="/mentor-dashboard" element={<ProtectedRoute roles={['mentor']}><MentorDashboard /></ProtectedRoute>} />
       <Route path="/analytics" element={<ProtectedRoute roles={['hod', 'principal', 'admin']}><Analytics /></ProtectedRoute>} />
       <Route path="/weekly-reports" element={<ProtectedRoute roles={['mentor', 'hod', 'principal', 'admin']}><WeeklyReports /></ProtectedRoute>} />
 

@@ -10,11 +10,20 @@ const ROLES = ['student', 'cr', 'mentor', 'hod', 'principal', 'admin'];
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
+  const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
   const load = () => {
-    api.get('/users').then((res) => setUsers(res.data.users)).finally(() => setLoading(false));
+    Promise.all([
+      api.get('/users'),
+      api.get('/users/mentors'),
+    ])
+      .then(([usersRes, mentorsRes]) => {
+        setUsers(usersRes.data.users);
+        setMentors(mentorsRes.data.mentors || []);
+      })
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);
@@ -40,6 +49,16 @@ export default function UserManagement() {
     }
   };
 
+  const assignMentor = async (userId, mentorId) => {
+    try {
+      await api.patch(`/users/${userId}/mentor`, { mentorId: mentorId || 'null' });
+      showToast('Mentor assignment updated', 'success');
+      load();
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Failed to update mentor', 'error');
+    }
+  };
+
   return (
     <DashboardLayout>
       <h1 className="text-2xl font-bold text-slate-800 mb-1">User Management</h1>
@@ -58,6 +77,7 @@ export default function UserManagement() {
                 <th className="px-4 py-3">Email</th>
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Department</th>
+                <th className="px-4 py-3">Mentor</th>
                 <th className="px-4 py-3">Status</th>
               </tr>
             </thead>
@@ -76,6 +96,19 @@ export default function UserManagement() {
                     </select>
                   </td>
                   <td className="px-4 py-3">{u.department}</td>
+                  <td className="px-4 py-3">
+                    <select
+                      className="input-field py-1 text-xs w-auto min-w-[150px]"
+                      value={u.mentorId || ''}
+                      onChange={(e) => assignMentor(u._id, e.target.value)}
+                      disabled={u.role !== 'student'}
+                    >
+                      <option value="">No mentor</option>
+                      {mentors.map((mentor) => (
+                        <option key={mentor._id} value={mentor._id}>{mentor.name}</option>
+                      ))}
+                    </select>
+                  </td>
                   <td className="px-4 py-3">
                     <button
                       onClick={() => toggleStatus(u)}

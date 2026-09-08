@@ -44,6 +44,8 @@ async function seed() {
     const user = await User.create({ ...u, password: hashedPassword });
     createdUsers[u.role] = user;
   }
+  createdUsers.student.mentorId = createdUsers.mentor._id;
+  await createdUsers.student.save();
   console.log(`Created ${DEMO_USERS.length} demo users`);
 
   const student = createdUsers.student;

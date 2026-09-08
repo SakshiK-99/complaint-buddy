@@ -37,6 +37,7 @@ const complaintSchema = new mongoose.Schema(
       default: 'Submitted',
     },
     assignedRole: { type: String, enum: ['cr', 'mentor', 'hod', 'principal', 'admin'], default: 'cr' },
+    mentorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
     anonymous: { type: Boolean, default: true },
     evidence: [{ filename: String, originalName: String, mimeType: String }],
     messages: [messageSchema],
