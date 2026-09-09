@@ -1,16 +1,53 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ShieldCheck, GraduationCap, UserCircle2, BriefcaseBusiness } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
+const ROLE_OPTIONS = [
+  {
+    key: 'student',
+    label: 'Student Login',
+    email: 'student@campuscare.com',
+    password: 'Campus@123',
+    icon: GraduationCap,
+    description: 'Track complaints and update your case status.',
+  },
+  {
+    key: 'mentor',
+    label: 'Mentor Login',
+    email: 'mentor@campuscare.com',
+    password: 'Campus@123',
+    icon: UserCircle2,
+    description: 'Review anonymous complaints from your mentees.',
+  },
+  {
+    key: 'admin',
+    label: 'Admin Login',
+    email: 'admin@campuscare.com',
+    password: 'Campus@123',
+    icon: BriefcaseBusiness,
+    description: 'Manage users, assignments, and reports.',
+  },
+];
+
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { role } = useParams();
+  const selectedRole = ROLE_OPTIONS.find((item) => item.key === role) || null;
+  const defaultEmail = selectedRole?.email || '';
+  const defaultPassword = selectedRole?.password || '';
+
+  const [email, setEmail] = useState(defaultEmail);
+  const [password, setPassword] = useState(defaultPassword);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    setEmail(defaultEmail);
+    setPassword(defaultPassword);
+  }, [defaultEmail, defaultPassword]);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -26,16 +63,62 @@ export default function Login() {
     }
   };
 
+  if (!selectedRole) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-8">
+        <div className="w-full max-w-5xl">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <ShieldCheck className="w-8 h-8 text-primary-500" />
+              <span className="font-bold text-xl text-slate-800">CampusCare</span>
+            </div>
+            <h1 className="text-3xl font-bold text-slate-800">Choose your login</h1>
+            <p className="text-sm text-slate-500 mt-2">Select the portal you want to access.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {ROLE_OPTIONS.map((option) => {
+              const Icon = option.icon;
+              return (
+                <Link
+                  key={option.key}
+                  to={`/login/${option.key}`}
+                  className="card hover:border-primary-200 hover:bg-primary-50 transition-colors block"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-primary-600" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-slate-800">{option.label}</h2>
+                  <p className="text-sm text-slate-500 mt-3">{option.description}</p>
+                  <div className="mt-5 text-sm text-primary-600 font-medium">Open login →</div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-8">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center gap-2 mb-6">
           <ShieldCheck className="w-8 h-8 text-primary-500" />
           <span className="font-bold text-xl text-slate-800">CampusCare</span>
         </div>
+
         <div className="card">
-          <h1 className="text-xl font-bold text-slate-800 mb-1">Welcome back</h1>
-          <p className="text-sm text-slate-500 mb-6">Login to continue to your dashboard.</p>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center">
+              <selectedRole.icon className="w-6 h-6 text-primary-600" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-800">{selectedRole.label}</h1>
+              <p className="text-sm text-slate-500">Use your role-specific credentials</p>
+            </div>
+          </div>
+
           <form onSubmit={submit} className="space-y-4">
             <div>
               <label className="label">Email</label>
@@ -49,13 +132,16 @@ export default function Login() {
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
+
+          <div className="mt-5 rounded-xl bg-slate-50 border border-slate-200 p-3 text-sm text-slate-600">
+            <p><span className="font-medium">Email:</span> {selectedRole.email}</p>
+            <p><span className="font-medium">Password:</span> {selectedRole.password}</p>
+          </div>
+
           <p className="text-sm text-slate-500 text-center mt-5">
-            Don't have an account? <Link to="/register" className="text-primary-600 font-medium">Register</Link>
+            Need another account? <Link to="/login" className="text-primary-600 font-medium">Choose role</Link>
           </p>
         </div>
-        <p className="text-xs text-slate-400 text-center mt-4">
-          Demo password for all demo accounts: <span className="font-mono">Campus@123</span>
-        </p>
       </div>
     </div>
   );

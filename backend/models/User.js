@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema(
     studentId: { type: String },
     department: { type: String, default: 'General' },
     year: { type: String },
+    mentorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
     status: { type: String, enum: ['active', 'inactive'], default: 'active' },
   },
   { timestamps: true }

@@ -3,7 +3,8 @@ const Complaint = require('../models/Complaint');
 const { protect, authorize } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const { generateComplaintId } = require('../utils/complaintId');
-const { getDepartmentForCategory, getInitialAssignedRole, getNextRole } = require('../utils/routing');
+const { getDepartmentForCategory, getNextRole } = require('../utils/routing');
+const { getComplaintRouting } = require('../utils/mentorRouting');
 
 const router = express.Router();
 
@@ -25,7 +26,8 @@ router.post('/', protect, authorize('student'), upload.array('evidence', 5), asy
     }
     const complaintId = await generateComplaintId();
     const resolvedDepartment = department || getDepartmentForCategory(category);
-    const assignedRole = getInitialAssignedRole(priority || 'Low', category);
+    const studentProfile = await require('../models/User').findById(req.user._id).select('mentorId');
+    const routing = getComplaintRouting(studentProfile, priority || 'Low', category);
 
     const evidence = (req.files || []).map((f) => ({
       filename: f.filename,
@@ -41,7 +43,8 @@ router.post('/', protect, authorize('student'), upload.array('evidence', 5), asy
       category,
       priority: priority || 'Low',
       department: resolvedDepartment,
-      assignedRole,
+      assignedRole: routing.assignedRole,
+      mentorId: routing.mentorId || null,
       anonymous: true,
       evidence,
     });
@@ -60,7 +63,13 @@ router.get('/', protect, async (req, res, next) => {
 
     if (req.user.role === 'student') {
       filter.studentReference = req.user._id;
-    } else if (['cr', 'mentor', 'hod'].includes(req.user.role)) {
+    } else if (req.user.role === 'mentor') {
+      const menteeIds = await require('../models/User').find({ mentorId: req.user._id }).select('_id');
+      filter.$or = [
+        { assignedRole: 'mentor', mentorId: req.user._id },
+        { studentReference: { $in: menteeIds.map((u) => u._id) } },
+      ];
+    } else if (['cr', 'hod'].includes(req.user.role)) {
       filter.assignedRole = req.user.role;
     } // principal & admin see everything
 

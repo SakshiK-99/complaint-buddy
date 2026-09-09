@@ -19,6 +19,7 @@ function sanitize(user) {
     studentId: user.studentId,
     department: user.department,
     year: user.year,
+    mentorId: user.mentorId,
     status: user.status,
   };
 }

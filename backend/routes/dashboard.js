@@ -11,7 +11,10 @@ router.get('/stats', protect, async (req, res, next) => {
     const filter = {};
     if (req.user.role === 'student') {
       filter.studentReference = req.user._id;
-    } else if (['cr', 'mentor', 'hod'].includes(req.user.role)) {
+    } else if (req.user.role === 'mentor') {
+      const menteeIds = await require('../models/User').find({ mentorId: req.user._id }).select('_id');
+      filter.studentReference = { $in: menteeIds.map((u) => u._id) };
+    } else if (['cr', 'hod'].includes(req.user.role)) {
       filter.assignedRole = req.user.role;
     }
     const complaints = await Complaint.find(filter);
