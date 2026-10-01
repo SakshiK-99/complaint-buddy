@@ -28,7 +28,7 @@ export default function LandingPage() {
       <Navbar />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center">
-        <p className="text-primary-600 font-semibold text-sm mb-3">CampusCare</p>
+        <p className="text-primary-600 font-semibold text-sm mb-3">Complaint Buddy</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 leading-tight max-w-3xl mx-auto">
           Your Voice Matters.
         </h1>
@@ -47,7 +47,7 @@ export default function LandingPage() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <h2 className="text-2xl font-bold text-slate-800 text-center mb-10">What CampusCare Offers</h2>
+        <h2 className="text-2xl font-bold text-slate-800 text-center mb-10">What Complaint Buddy Offers</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {FEATURES.map((f) => (
             <div key={f.title} className="card">
@@ -78,7 +78,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="text-center py-8 text-sm text-slate-400">
-        © {new Date().getFullYear()} CampusCare. Built for a safer, more responsive campus.
+        © {new Date().getFullYear()} Complaint Buddy. Built for a safer, more responsive campus.
       </footer>
     </div>
   );

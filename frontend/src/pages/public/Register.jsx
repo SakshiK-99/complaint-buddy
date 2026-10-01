@@ -40,7 +40,7 @@ export default function Register() {
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center gap-2 mb-6">
           <ShieldCheck className="w-8 h-8 text-primary-500" />
-          <span className="font-bold text-xl text-slate-800">CampusCare</span>
+          <span className="font-bold text-xl text-slate-800">Complaint Buddy</span>
         </div>
         <div className="card">
           <h1 className="text-xl font-bold text-slate-800 mb-1">Create your student account</h1>

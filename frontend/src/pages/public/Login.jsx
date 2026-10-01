@@ -70,7 +70,7 @@ export default function Login() {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-3">
               <ShieldCheck className="w-8 h-8 text-primary-500" />
-              <span className="font-bold text-xl text-slate-800">CampusCare</span>
+              <span className="font-bold text-xl text-slate-800">Complaint Buddy</span>
             </div>
             <h1 className="text-3xl font-bold text-slate-800">Choose your login</h1>
             <p className="text-sm text-slate-500 mt-2">Select the portal you want to access.</p>
@@ -105,7 +105,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center gap-2 mb-6">
           <ShieldCheck className="w-8 h-8 text-primary-500" />
-          <span className="font-bold text-xl text-slate-800">CampusCare</span>
+          <span className="font-bold text-xl text-slate-800">Complaint Buddy</span>
         </div>
 
         <div className="card">

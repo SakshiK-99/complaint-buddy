@@ -55,7 +55,7 @@ export default function Sidebar() {
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-2 px-5 h-16 border-b border-slate-200">
         <ShieldCheck className="w-6 h-6 text-primary-500" />
-        <span className="font-bold text-slate-800">CampusCare</span>
+        <span className="font-bold text-slate-800">Complaint Buddy</span>
       </div>
       <nav className="flex-1 px-3 py-4 space-y-1">
         {items.map(({ label, to, icon: Icon }) => (
@@ -93,7 +93,7 @@ export default function Sidebar() {
       </aside>
 
       <div className="md:hidden flex items-center justify-between bg-white border-b border-slate-200 px-4 h-14 sticky top-0 z-40">
-        <span className="font-bold text-slate-800">CampusCare</span>
+        <span className="font-bold text-slate-800">Complaint Buddy</span>
         <button onClick={() => setOpen(true)}><Menu className="w-6 h-6" /></button>
       </div>
       {open && (
